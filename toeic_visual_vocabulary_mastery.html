@@ -40,8 +40,12 @@
     <style>
         .flip-card {
             perspective: 1000px;
+            min-height: 420px;
         }
         .flip-card-inner {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            min-height: inherit;
             transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             transform-style: preserve-3d;
         }
@@ -49,6 +53,9 @@
             transform: rotateY(180deg);
         }
         .flip-card-front, .flip-card-back {
+            grid-area: 1 / 1;
+            min-width: 0;
+            overflow-wrap: anywhere;
             backface-visibility: hidden;
             -webkit-backface-visibility: hidden;
         }
@@ -236,18 +243,18 @@
 
             <!-- Flashcard Container -->
             <div class="max-w-xl mx-auto">
-                <div id="flashcard" onclick="flipCard()" class="flip-card cursor-pointer w-full h-[420px] rounded-3xl shadow-xl transition-all hover:shadow-2xl">
-                    <div class="flip-card-inner relative w-full h-full text-center rounded-3xl bg-white border border-slate-200">
+                <div id="flashcard" onclick="flipCard()" class="flip-card cursor-pointer w-full rounded-3xl shadow-xl transition-all hover:shadow-2xl">
+                    <div class="flip-card-inner relative w-full text-center rounded-3xl bg-white border border-slate-200">
                         <!-- FRONT SIDE -->
-                        <div class="flip-card-front absolute inset-0 w-full h-full rounded-3xl p-6 flex flex-col justify-between bg-white overflow-hidden">
+                        <div class="flip-card-front w-full rounded-3xl p-4 sm:p-6 flex flex-col justify-between bg-white overflow-hidden">
                             <div class="flex justify-between items-center text-xs text-slate-400 font-semibold">
                                 <span id="card-day-label">Day 1</span>
                                 <span class="text-emerald-600"><i class="fa-solid fa-rotate"></i> 클릭해서 뜻 확인</span>
                             </div>
 
                             <!-- Word Image / Visual Association -->
-                            <div class="flex-1 flex flex-col items-center justify-center my-3 space-y-3">
-                                <div class="relative w-full h-44 rounded-2xl overflow-hidden bg-slate-100 border border-slate-200">
+                            <div class="flex-1 min-w-0 flex flex-col items-center justify-center my-3 space-y-3">
+                                <div class="relative w-full h-44 shrink-0 rounded-2xl overflow-hidden bg-slate-100 border border-slate-200">
                                     <img id="card-img" src="" alt="Word Visual" class="w-full h-full object-cover transition-all">
                                     <button onclick="event.stopPropagation(); generateAiImageForCurrentCard();" class="absolute bottom-2 right-2 px-2.5 py-1 bg-black/60 hover:bg-black/80 text-white text-[10px] font-medium rounded-lg backdrop-blur-md flex items-center gap-1 transition-all">
                                         <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i> AI 연상 생성
@@ -257,9 +264,9 @@
                                     <h3 id="card-word" class="text-3xl font-extrabold text-slate-800">loading...</h3>
                                     <p id="card-phonetic" class="text-xs text-slate-400 font-mono mt-0.5">[/.../]</p>
                                 </div>
-                                <div class="bg-amber-50 text-amber-800 text-xs px-3 py-1.5 rounded-xl border border-amber-200 flex items-center gap-1.5 max-w-sm">
+                                <div class="bg-amber-50 text-amber-800 text-xs px-3 py-1.5 rounded-xl border border-amber-200 flex items-center gap-1.5 w-full max-w-sm min-w-0">
                                     <i class="fa-solid fa-lightbulb text-amber-500 flex-shrink-0"></i>
-                                    <span id="card-mnemonic" class="font-medium truncate">시각 연상 팁 로딩 중...</span>
+                                    <span id="card-mnemonic" class="font-medium min-w-0 whitespace-normal break-words text-left leading-relaxed">시각 연상 팁 로딩 중...</span>
                                 </div>
                             </div>
 
@@ -271,7 +278,7 @@
                         </div>
 
                         <!-- BACK SIDE -->
-                        <div class="flip-card-back absolute inset-0 w-full h-full rounded-3xl p-6 flex flex-col justify-between bg-gradient-to-b from-slate-900 to-slate-800 text-white overflow-hidden">
+                        <div class="flip-card-back w-full rounded-3xl p-4 sm:p-6 flex flex-col justify-between bg-gradient-to-b from-slate-900 to-slate-800 text-white overflow-hidden">
                             <div class="flex justify-between items-center text-xs text-slate-400">
                                 <span id="card-pos" class="bg-slate-700 text-slate-200 px-2 py-0.5 rounded">명사</span>
                                 <span><i class="fa-solid fa-rotate"></i> 앞면으로 뒤집기</span>
